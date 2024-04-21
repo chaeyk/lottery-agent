@@ -24,7 +24,6 @@ class Message:
       'chat_id': self.chatid,
       'text': self.message,
     }
-    print(payload)
 
     r = requests.post(url, json=payload)
     print(r.json())
