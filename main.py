@@ -48,8 +48,13 @@ def main(message: Message):
   args = get_args()
 
   chrome_options = Options()
+  chrome_options.binary_location='/usr/bin/chromium'
   if args.headless:
-    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('headless')
+    chrome_options.add_argument('no-sandbox')
+    chrome_options.add_argument('disable-dev-shm-usage')
+    chrome_options.add_argument('window-size=1920x1080')
+    chrome_options.add_argument('disable-gpu')
   chrome_options.add_experimental_option('excludeSwitches', ['disable-popup-blocking']) # 팝업 차단
   chrome_options.set_capability('unhandledPromptBehavior', 'accept') # alert 통과
 
