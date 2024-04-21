@@ -33,7 +33,7 @@ class DhLottery:
     if not name.text.endswith('님'):
       raise Exception(f'로그인 실패: {name.text}')
 
-  def buyWin720(self, count: int):
+  def buyLp72(self, count: int):
     self.driver.get('https://el.dhlottery.co.kr/game/TotalGame.jsp?LottoId=LP72')
 
     iframe = self.driver.find_element(By.TAG_NAME, 'iframe')
