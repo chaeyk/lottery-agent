@@ -9,6 +9,16 @@ from time import sleep
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
+def show_welcome():
+  try:
+    with open('welcome.txt', 'r') as file:
+      content = file.read()
+      print('---------------------------------------------')
+      print(content)
+      print('---------------------------------------------')
+  except FileNotFoundError:
+    pass
+
 def get_args():
   headless = getenv('LTA_HEADLESS', '1') == '1'
   dryrun = getenv('LTA_DRYRUN', '0') == '1'
@@ -38,6 +48,8 @@ def get_args():
   return args
 
 def main(message: Message):
+  show_welcome()
+
   userid = getenv('DHL_USERID')
   if not userid:
     raise Exception('should set DHL_USERID variable.')
