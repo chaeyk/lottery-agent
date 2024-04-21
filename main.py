@@ -17,13 +17,25 @@ def get_args():
 
   parser = ArgumentParser(description='Lottery Agent')
   parser.add_argument('command', choices=['buy', 'check'])
-  parser.add_argument('--headless', dest='headless', action='store_true', default=headless)
-  parser.add_argument('--no-headless', dest='headless', action='store_false', default=headless)
-  parser.add_argument('--dryrun', dest='dryrun', action='store_true', default=dryrun)
-  parser.add_argument('--no-dryrun', dest='dryrun', action='store_false', default=dryrun)
-  parser.add_argument('--lo40', dest='lo40_count', type=int, default=lo40_count)
-  parser.add_argument('--lp72', dest='lp72_count', type=int, default=lp72_count)
-  return parser.parse_args()
+  parser.add_argument('--headless', dest='headless', action='store_true', default=headless, help='enable headless mode. [LTA_HEADLESS=1]')
+  parser.add_argument('--no-headless', dest='headless', action='store_false', default=headless, help='disable headless mode. [LTA_HEADLESS=0]')
+  parser.add_argument('--dryrun', dest='dryrun', action='store_true', default=dryrun, help='run only up to the point of purchase. [LTA_DRYRUN=1]')
+  parser.add_argument('--no-dryrun', dest='dryrun', action='store_false', default=dryrun, help='run to the end. [LTA_DRYRUN=0]')
+  parser.add_argument('--lo40', dest='lo40_count', metavar='n', type=int, default=lo40_count, help='lotto 6/45 purchase quantity. [LTA_LO40_COUNT=n]')
+  parser.add_argument('--lp72', dest='lp72_count', metavar='n', type=int, default=lp72_count, help='annuity lottery 720+ purchase quantity. [LTA_LP72_COUNT=n]')
+  args = parser.parse_args()
+
+  print()
+  print('Options')
+  print('-------------------------------------')
+  print(f'headless = {args.headless}')
+  print(f'dryrun = {args.dryrun}')
+  print(f'lo40 = {args.lo40_count}')
+  print(f'lp72 = {args.lp72_count}')
+  print('-------------------------------------')
+  print()
+
+  return args
 
 def main(message: Message):
   userid = getenv('DHL_USERID')
@@ -34,6 +46,7 @@ def main(message: Message):
     raise Exception('should set DHL_PASSWORD variable.')
 
   args = get_args()
+  return
 
   chrome_options = Options()
   if args.headless:
