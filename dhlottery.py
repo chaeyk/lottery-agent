@@ -60,7 +60,6 @@ class DhLottery:
       select_num_button = self.driver.find_element(By.ID, 'btnSelectNum')
       select_num_button.click()
 
-      print(f'dryrun {dryrun}')
       if not dryrun:
         # 구매 버튼 누름
         buy_button = self.driver.find_element(By.NAME, 'btnBuy')
