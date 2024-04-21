@@ -46,7 +46,6 @@ def main(message: Message):
     raise Exception('should set DHL_PASSWORD variable.')
 
   args = get_args()
-  return
 
   chrome_options = Options()
   if args.headless:
@@ -90,9 +89,13 @@ def main(message: Message):
 
   driver.quit()
 
-message = Message()
+bottoken = getenv('TLG_BOTTOKEN')
+chatid = getenv('TLG_CHATID')
+message = Message(bottoken=bottoken, chatid=chatid)
+
 try:
   main(message)
 except Exception as e:
-  message.send(f'\n에러 발생: {e}')
+  message.add(f'\n에러 발생: {e}')
+  message.send()
   raise
