@@ -41,6 +41,16 @@ class DhLottery:
     money = self.driver.find_element(By.XPATH, '//li[@class="money"]/a/strong')
     return money.text
 
+  def _get_popup_layer_message(self):
+    try:
+      layer_message = self.driver.find_element(By.XPATH, '//div[@id="popupLayerAlert"]/div/div/span[@class="layer-message"]')
+      WebDriverWait(self.driver, 10).until(EC.visibility_of(layer_message))
+      return layer_message.text
+    except Exception as e:
+      print('팝업 내용 못읽음:', e)
+      traceback.print_exc()
+      return ''
+
   # 로또 6/45
   def buyLo40(self, count: int, dryrun: bool) -> str:
     try:
@@ -50,7 +60,14 @@ class DhLottery:
       self.driver.switch_to.frame(iframe)
 
       # 자동 번호 선택
-      self.driver.execute_script('selectWayTab(1)')
+      try:
+        self.driver.execute_script('selectWayTab(1)')
+      except:
+        # 로또는 판매시간이 아니면 팝업이 뜬다.
+        message = self._get_popup_layer_message()
+        if message:
+          raise Exception(message)
+        raise
 
       # 수량 선택
       count_dropdown = Select(self.driver.find_element(By.ID, 'amoundApply'))
