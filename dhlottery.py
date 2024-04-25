@@ -147,3 +147,61 @@ class DhLottery:
       print('연금복권 구매실패:', e)
       traceback.print_exc()
       return f'연금복권 구매실패: {e}'
+
+  def _code_to_name(self, code: str):
+    dict = {
+      'LO40': '로또 6/15',
+      'LP72': '연금복권 720+'
+    }
+    return dict.get(code, code)
+
+  def check(self, code: str):
+    try:
+      self.driver.get('https://www.dhlottery.co.kr/myPage.do?method=lottoBuyListView')
+
+      # 복권 선택
+      lottoid_dropdown = Select(self.driver.find_element(By.ID, 'lottoId'))
+      lottoid_dropdown.select_by_value(code)
+
+      # 당첨여부 선택
+      wingrade_dropdown = Select(self.driver.find_element(By.ID, 'winGrade'))
+      wingrade_dropdown.select_by_value('1') # 당첨내역
+
+      # 기간은 1주일 선택
+      self.driver.execute_script('changeTerm(7, "1주일")')
+
+      # 조회
+      search_button = self.driver.find_element(By.ID, 'submit_btn')
+      search_button.click()
+
+      # 조회 결과는 iframe 안에 있다.
+      iframe = self.driver.find_element(By.ID, 'lottoBuyList')
+      self.driver.switch_to.frame(iframe)
+
+      try:
+        page_box = self.driver.find_element(By.ID, 'page_box')
+        WebDriverWait(self.driver, 10).until(EC.visibility_of(page_box))
+        pages = page_box.find_elements(By.TAG_NAME, 'a')
+        if len(pages) == 0:
+          raise Exception('꽝')
+      except:
+        return f'{self._code_to_name(code)} 당첨 없음'
+
+      bar = '---------------------------------------'
+      messages = ['당첨된 게 있다!!!', bar]
+      for page in pages:
+        page.click()
+        trs = self.driver.find_elements(By.XPATH, '//table/tbody/tr')
+        for tr in trs:
+          buy_date = tr.find_element(By.XPATH, 'td[1]').text
+          lottery_name = tr.find_element(By.XPATH, 'td[2]').text
+          money = tr.find_element(By.XPATH, 'td[7]').text
+          messages.append(f'{buy_date} {lottery_name} {money}')
+      messages.append(bar)
+
+      return '\n'.join(messages)
+
+    except Exception as e:
+      print('당첨 확인 실패:', e)
+      traceback.print_exc()
+      return f'당첨 확인 실패: {e}'

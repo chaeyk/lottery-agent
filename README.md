@@ -21,14 +21,23 @@ pip3 install -r requirements.txt
 
 ## 실행
 
+### 구매
 ```bash
-python3 main.py [-h] [--lo40 n] [--lp72 n] [--dryrun/--no-dryrun] [--headless/--no-headless] {buy,check}
+python3 main.py [--headless/--no-headless] buy [-h] [--lo40 n] [--lp72 n] [--dryrun/--no-dryrun]
 ```
 
+* --headless : 브라우저를 화면에 보여주지 않은 상태로 실행한다
 * -h : 도움말
 * --lo40 : 로또 구매 수량
 * --lp72 : 연금복권 구매 수량
 * --dryrun : 구매 직전까지만 실행하고 멈춘다
+
+### 당첨 확인
+```bash
+python3 main.py [--headless/--no-headless] buy {lo40,lp72}
+```
+
 * --headless : 브라우저를 화면에 보여주지 않은 상태로 실행한다
-* buy : 구매
-* check : 당첨 결과 조회
+* -h : 도움말
+* lo40 : 로또 6/45
+* lp72 : 연금복권 720+

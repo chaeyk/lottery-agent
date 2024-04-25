@@ -26,4 +26,3 @@ class Message:
     }
 
     r = requests.post(url, json=payload)
-    print(r.json())
