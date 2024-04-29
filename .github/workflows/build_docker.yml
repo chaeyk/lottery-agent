@@ -22,13 +22,12 @@ jobs:
       id: branch
       run: |
         branch=${{ github.ref_name }}
-        versions=${branch##*/}
-        major_version=${versions%%-*}
-        minor_version=${versions##*-}
+        major_version=${branch##*/}
+        minor_version=$(TZ=Asia/Seoul date +%y%m%d-%H%M)
         echo "major_version=${major_version}" >> "$GITHUB_ENV"
         echo "minor_version=${minor_version}" >> "$GITHUB_ENV"
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: chaeyk/lottery-agent:latest,chaeyk/lottery-agent:${{ env.major-version }},chaeyk/lottery-agent:${{ env.major_version }}-${{ env.minor_version }}
+        tags: chaeyk/lottery-agent:latest,chaeyk/lottery-agent:${{ env.major_version }},chaeyk/lottery-agent:${{ env.major_version }}-${{ env.minor_version }}
