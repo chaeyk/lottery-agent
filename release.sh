@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set -x
 
 mod=$(git status --porcelain)
 if [ -n "$mod" ]; then
