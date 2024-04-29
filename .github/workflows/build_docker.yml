@@ -24,7 +24,7 @@ jobs:
         branch=${{ github.ref_name }}
         versions=${branch##*/}
         major_version=${versions%%-*}
-        minor_version=${version##*-}
+        minor_version=${versions##*-}
         echo "major_version=${major_version}" >> "$GITHUB_ENV"
         echo "minor_version=${minor_version}" >> "$GITHUB_ENV"
     - name: Build and Push the Docker Image
