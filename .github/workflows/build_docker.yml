@@ -2,9 +2,8 @@ name: Build Docker Image
 
 on:
   push:
-    branches: [ release ]
-  pull_request:
-    branches: [ release ]
+    branches:
+    - 'release/v**'
 
 jobs:
   build:
@@ -19,8 +18,17 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Detect branch
+      id: branch
+      run: |
+        branch=${{ github.ref_name }}
+        versions=${branch##*/}
+        major_version=${versions%%-*}
+        minor_version=${version##*-}
+        echo "major_version=${major_version}" >> "$GITHUB_ENV"
+        echo "minor_version=${minor_version}" >> "$GITHUB_ENV"
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: chaeyk/lottery-agent:latest
+        tags: chaeyk/lottery-agent:latest,chaeyk/lottery-agent:${{ env.major-version }},chaeyk/lottery-agent:${{ env.major_version }}-${{ env.minor_version }}
