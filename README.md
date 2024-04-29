@@ -34,7 +34,7 @@ python3 main.py [--headless/--no-headless] buy [-h] [--lo40 n] [--lp72 n] [--dry
 
 ### 당첨 확인
 ```bash
-python3 main.py [--headless/--no-headless] buy {lo40,lp72}
+python3 main.py [--headless/--no-headless] check {lo40,lp72}
 ```
 
 * --headless : 브라우저를 화면에 보여주지 않은 상태로 실행한다
