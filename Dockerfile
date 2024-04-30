@@ -9,4 +9,4 @@ COPY *.py /app/
 
 RUN echo -n "Build Date: $(date)" > welcome.txt
 
-ENTRYPOINT ["python3", "main.py"]
+ENTRYPOINT ["python3", "/app/main.py"]
