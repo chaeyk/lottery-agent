@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check result
-      uses: chaeyk/lottery-buy-action@main
+      uses: chaeyk/lottery-buy-action@v1
       with:
         username: ${{ secrets.DHL_USERID }}
         password: ${{ secrets.DHL_PASSWORD }}
