@@ -1,0 +1,16 @@
+name: Annuity Lottery 720+ result checker
+
+on:
+  schedule:
+  - cron: 0 11 * * 4 # every Thursday on 08:00 PM (KST)
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check result
+      uses: chaeyk/lottery-check-action@v1
+      with:
+        username: ${{ secrets.DHL_USERID }}
+        password: ${{ secrets.DHL_PASSWORD }}
+        lottery-code: lp72

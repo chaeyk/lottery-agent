@@ -1,0 +1,16 @@
+name: Lotto 6/45 result checker
+
+on:
+  schedule:
+  - cron: 30 12 * * 6 # every Saturday on 09:30 PM (KST)
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check result
+      uses: chaeyk/lottery-check-action@v1
+      with:
+        username: ${{ secrets.DHL_USERID }}
+        password: ${{ secrets.DHL_PASSWORD }}
+        lottery-code: lo40
