@@ -3,6 +3,7 @@ name: Annuity Lottery 720+ result checker
 on:
   schedule:
   - cron: 0 11 * * 4 # every Thursday on 08:00 PM (KST)
+  workflow_dispatch: {}
 
 jobs:
   check:
