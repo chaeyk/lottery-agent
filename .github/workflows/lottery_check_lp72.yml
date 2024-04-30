@@ -14,4 +14,6 @@ jobs:
       with:
         username: ${{ secrets.DHL_USERID }}
         password: ${{ secrets.DHL_PASSWORD }}
+        telegram-bot-token: ${{ secrets.TLG_BOTTOKEN }}
+        telegram-chatid: ${{ secrets.TLG_CHATID }}
         lottery-code: lp72
