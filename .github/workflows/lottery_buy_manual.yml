@@ -1,0 +1,41 @@
+name: Lottery purchase (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      lo40:
+        description: '로또 구매 수량'
+        required: true
+        default: '1'
+        type: 'choice'
+        options:
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+        - '5'
+      lp72:
+        description: '연금복권 구매 수량'
+        required: true
+        default: '1'
+        type: 'choice'
+        options:
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+        - '5'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check result
+      uses: chaeyk/lottery-buy-action@v1
+      with:
+        username: ${{ secrets.DHL_USERID }}
+        password: ${{ secrets.DHL_PASSWORD }}
+        telegram-bot-token: ${{ secrets.TLG_BOTTOKEN }}
+        telegram-chatid: ${{ secrets.TLG_CHATID }}
+        lo40: ${{ inputs.lo40 }}
+        lp72: ${{ inputs.lp72 }}
