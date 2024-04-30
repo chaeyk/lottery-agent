@@ -19,6 +19,12 @@ def show_welcome():
   except FileNotFoundError:
     pass
 
+def int_or_default(value, default=0):
+  try:
+    return int(value)
+  except ValueError:
+    return default
+
 def get_args():
   headless = getenv('LTA_HEADLESS', '1') == '1'
   dryrun = getenv('LTA_DRYRUN', '0') == '1'
@@ -34,8 +40,8 @@ def get_args():
   buy_parser = subparsers.add_parser('buy', help='buy lottery.')
   buy_parser.add_argument('--dryrun', dest='dryrun', action='store_true', default=dryrun, help='run only up to the point of purchase. [LTA_DRYRUN=1]')
   buy_parser.add_argument('--no-dryrun', dest='dryrun', action='store_false', default=dryrun, help='run to the end. [LTA_DRYRUN=0]')
-  buy_parser.add_argument('--lo40', dest='lo40_count', metavar='n', type=int, default=lo40_count, help='lotto 6/45 purchase quantity. [LTA_LO40_COUNT=n]')
-  buy_parser.add_argument('--lp72', dest='lp72_count', metavar='n', type=int, default=lp72_count, help='annuity lottery 720+ purchase quantity. [LTA_LP72_COUNT=n]')
+  buy_parser.add_argument('--lo40', dest='lo40_count', metavar='n', type=lambda v: int_or_default(v, lo40_count), default=lo40_count, help='lotto 6/45 purchase quantity. [LTA_LO40_COUNT=n]')
+  buy_parser.add_argument('--lp72', dest='lp72_count', metavar='n', type=lambda v: int_or_default(v, lp72_count), default=lp72_count, help='annuity lottery 720+ purchase quantity. [LTA_LP72_COUNT=n]')
 
   check_parser = subparsers.add_parser('check', help='verify that the lottery ticket has been won.')
   check_parser = check_parser.add_argument('lottery', choices=['lo40', 'lp72'], help='select lottery.')
