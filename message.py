@@ -2,17 +2,18 @@ import requests
 
 class Message:
   message: str
-  image: bytes
+  image: bytes | None
   bottoken: str
   chatid: str
 
-  def __init__(self, bottoken: str, chatid: str, m: str = ''):
-    self.message = m
+  def __init__(self, bottoken: str, chatid: str, message: str = ''):
+    self.message = message
+    self.image = None
     self.bottoken = bottoken
     self.chatid = chatid
 
-  def add(self, m: str):
-    self.message = f'{self.message}\n{m}'
+  def add(self, message: str):
+    self.message = f'{self.message}\n{message}'
 
   def add_image(self, image: bytes):
     self.image = image
