@@ -18,14 +18,16 @@ class Message:
     self.image = image
 
   def send(self):
-    self.send_message()
-    self.send_image()
+    if not self.bottoken or not self.chatid:
+      return
+
+    if self.message:
+      self.send_message()
+    if self.image:
+      self.send_image()
 
   def send_message(self):
     print(self.message)
-
-    if not self.bottoken or not self.chatid:
-      return
 
     url = f'https://api.telegram.org/bot{self.bottoken}/sendMessage'
     payload = {
