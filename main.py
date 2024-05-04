@@ -1,6 +1,7 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.chrome.options import Options
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from dhlottery import DhLottery
 from message import Message
 from os import getenv
@@ -61,18 +62,7 @@ def get_args():
 
   return args
 
-def main(message: Message):
-  show_welcome()
-
-  userid = getenv('DHL_USERID')
-  if not userid:
-    raise Exception('should set DHL_USERID variable.')
-  password = getenv('DHL_PASSWORD')
-  if not password:
-    raise Exception('should set DHL_PASSWORD variable.')
-
-  args = get_args()
-
+def create_driver(args: Namespace):
   chrome_options = Options()
   chrome_options.binary_location='/usr/bin/chromium'
   if args.headless:
@@ -90,6 +80,16 @@ def main(message: Message):
     'Page.addScriptToEvaluateOnNewDocument',
     {'source': "Object.defineProperty(navigator, 'platform', {get: () => 'Win64'})"}
   )
+
+  return driver
+
+def do_lottery(args: Namespace, driver: WebDriver, message: Message):
+  userid = getenv('DHL_USERID')
+  if not userid:
+    raise Exception('should set DHL_USERID variable.')
+  password = getenv('DHL_PASSWORD')
+  if not password:
+    raise Exception('should set DHL_PASSWORD variable.')
 
   dhlottery = DhLottery(driver)
   dhlottery.login(userid, password)
@@ -125,13 +125,22 @@ def main(message: Message):
 
   driver.quit()
 
+def take_screenshot(driver: WebDriver) -> bytes:
+  return driver.get_screenshot_as_png()
+
 bottoken = getenv('TLG_BOTTOKEN')
 chatid = getenv('TLG_CHATID')
 message = Message(bottoken=bottoken, chatid=chatid)
 
+driver = None
 try:
-  main(message)
+  show_welcome()
+  args = get_args()
+  driver = create_driver(args)
+  do_lottery(args, driver, message)
 except Exception as e:
   message.add(f'\n에러 발생: {e}')
+  if driver:
+    message.add_image(take_screenshot(driver))
   message.send()
   raise
