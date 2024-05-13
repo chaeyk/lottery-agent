@@ -19,9 +19,6 @@ class Message:
     self.image = image
 
   def send(self):
-    if not self.bottoken or not self.chatid:
-      return
-
     if self.message:
       self.send_message()
     if self.image:
@@ -29,6 +26,9 @@ class Message:
 
   def send_message(self):
     print(self.message)
+
+    if not self.bottoken or not self.chatid:
+      return
 
     url = f'https://api.telegram.org/bot{self.bottoken}/sendMessage'
     payload = {
@@ -39,6 +39,9 @@ class Message:
     requests.post(url, json=payload)
 
   def send_image(self):
+    if not self.bottoken or not self.chatid:
+      return
+
     url = f'https://api.telegram.org/bot{self.bottoken}/sendPhoto'
     files = {
       'photo': self.image,
