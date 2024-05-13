@@ -2,7 +2,7 @@ name: Lotto 6/45 result checker
 
 on:
   schedule:
-  - cron: 30 12 * * 6 # every Saturday on 09:30 PM (KST)
+  - cron: 0 12 * * 0 # every Sunday on 09:00 PM (KST)
   workflow_dispatch: {}
 
 jobs:
